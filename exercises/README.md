@@ -8,5 +8,6 @@
 - [Fix mistakes without panic](06_undo_things.md)
 - [Resolve a conflict in a CSV](07_merge_conflict.md)
 - [Review and respond](08_review_cycle.md)
+- [Review and approve a teammate's PR](08b_review_a_teammates_pr.md)
 - [Break and fix the dictionary check](09_dictionary_check.md)
 - [Full July dry run](10_fire_drill.md)

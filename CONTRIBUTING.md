@@ -20,6 +20,13 @@ Follow these steps in order for every change, however small.
 8. **Respond to review on the same branch.** Make the requested fix, commit it, and push it. The PR updates itself.
    Don't open a new PR.
 
+## Reviewing someone else's PR
+
+1. Open the PR and read **Files changed** and **Commits** first: only the intended file, lines and commits?
+2. Check the value against the source linked in the description.
+3. Comment on specific lines, then use **Review changes** to **Approve** or **Request changes**.
+4. Approve only what you actually checked. You can't approve your own PR.
+
 ## Rules of thumb
 
 - One topic per PR.
