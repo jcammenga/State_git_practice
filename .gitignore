@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# R
+.RData
+.Rhistory
+.Rproj.user/
+.Ruserdata
+
+# Claude Code local settings (per-user)
+.claude/settings.local.json
+
+# Generated outputs — directories created on demand by stci_master_file.R
+int_output/
+output/
+temp/

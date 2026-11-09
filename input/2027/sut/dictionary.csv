@@ -1,0 +1,3 @@
+category,variable,description,notes,...5,file
+gen,state,Name of fake U.S. state or DC,,,
+rates,state_sales_rate,FAKE state sales tax rate (percent),,,sales_rate.csv

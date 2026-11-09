@@ -1,0 +1,4 @@
+category,variable,description,notes,...5,file
+gen,state,Name of fake U.S. state or DC,,,
+limits,assess_limit,"FAKE: 0 = state limits assessment growth, 1 = no limit","Opposite convention from levy_limit on purpose, as in the real repo",,limits.csv
+limits,levy_limit,"FAKE: 1 = state limits levy growth, 0 = no limit",,,limits.csv

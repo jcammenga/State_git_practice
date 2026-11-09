@@ -1,0 +1,5 @@
+category,variable,description,notes,...5,file
+gen,state,Name of fake U.S. state or DC,,,
+rates,top_rate,FAKE top marginal rate (percent),,,top_rate.csv
+deductions,std_ded_single,"FAKE standard deduction, single filer ($)",,,standard_deduction.csv
+deductions,std_ded_married,"FAKE standard deduction, married filing jointly ($)",,,standard_deduction.csv

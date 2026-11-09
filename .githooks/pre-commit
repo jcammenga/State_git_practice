@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# pre-commit: reject UTF-8 BOMs in staged CSV files.
+#
+# Excel sometimes prepends a UTF-8 BOM (bytes EF BB BF) to the first line
+# when saving CSVs. The R pipeline tolerates this, but other tools (Python's
+# csv module, awk, jq) treat the BOM as part of the "state" header and break.
+# This hook stops BOMs from entering the repo in the first place.
+#
+# To enable in a fresh clone, run once:
+#   git config core.hooksPath .githooks
+
+bad=()
+
+# Walk every staged CSV. -z + read -d '' is safe for paths with spaces/newlines.
+# --diff-filter=ACMR covers Added, Copied, Modified, Renamed (skips Deleted).
+while IFS= read -r -d '' file; do
+  first3=$(git show ":$file" 2>/dev/null | head -c 3 | od -An -tx1 | tr -d ' \n')
+  if [ "$first3" = "efbbbf" ]; then
+    bad+=("$file")
+  fi
+done < <(git diff --cached --name-only -z --diff-filter=ACMR -- '*.csv')
+
+if [ "${#bad[@]}" -gt 0 ]; then
+  echo "Pre-commit check failed: UTF-8 BOM found in staged CSV file(s):"
+  for f in "${bad[@]}"; do
+    echo "  $f"
+  done
+  echo
+  echo "Strip the BOMs and re-stage:"
+  echo "  scripts/strip_bom.sh"
+  echo "  git add -u"
+  exit 1
+fi
+
+# Dictionary consistency check — only fires if a CSV under input/ is staged.
+if git diff --cached --name-only --diff-filter=ACMR -- 'input/*/*/*.csv' | grep -q .; then
+  if command -v Rscript >/dev/null 2>&1; then
+    if ! Rscript tests/check_dictionaries.R; then
+      echo
+      echo "Fix the dictionary issues above, then re-stage and commit."
+      exit 1
+    fi
+  else
+    # Windows installs of R don't add Rscript to PATH by default, so this is
+    # common for contributors committing from GitKraken or similar. The same
+    # check runs on every pull request in GitHub Actions, so let the commit
+    # through with a warning rather than blocking it.
+    echo "Warning: Rscript not found on PATH, skipping the dictionary consistency check."
+    echo "It will still run on your pull request. To run it locally, install R and"
+    echo "add its bin/ folder to PATH (e.g. C:\\Program Files\\R\\R-4.x.x\\bin on Windows)."
+  fi
+fi
+
+exit 0

@@ -1,0 +1,20 @@
+name: Check dictionaries
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    container: rocker/r-ver:latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install readr
+        run: install.packages("readr")
+        shell: Rscript {0}
+
+      - name: Run dictionary check
+        run: Rscript tests/check_dictionaries.R
